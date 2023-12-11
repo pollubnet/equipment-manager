@@ -1,0 +1,34 @@
+﻿@using ItemGeneratorModels
+
+<div class="col">
+    <div class="card" style="width: 15rem;">
+        <div class="card-header" style="background-color: red">
+            @Item.Name
+        </div>
+        <div class="card-body">
+            <p class="card-text">@Item.History</p>
+
+            <table class="table table-striped">
+                @foreach (var itemStat in Enum.GetValues<ItemStat>())
+                {
+                    <tr><td>@itemStat</td><td>@Item.Statistics[itemStat]</td></tr>
+                }
+            </table>
+            @if (IsEquipped)
+            {
+                <button class="btn btn-danger" @onclick="OnUnequipClicked">Unequip this</button>
+            }
+            else
+            {
+                <button class="btn btn-primary" @onclick="OnEquipClicked">Equip this</button>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Item Item { get; set; } = null!;
+    [Parameter] public bool IsEquipped { get; set; }
+    [Parameter] public EventCallback OnEquipClicked { get; set; }
+    [Parameter] public EventCallback OnUnequipClicked { get; set; }
+}

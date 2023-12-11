@@ -1,0 +1,68 @@
+﻿@page "/"
+@using ItemGeneratorModels
+
+<PageTitle>Home</PageTitle>
+
+<button class="btn btn-primary" @onclick="GenerateNewItem">Generate new item</button>
+
+<div class="row">
+    <div class="col-5 border border-primary">
+        <div class="row row-cols-2 g-4">
+            @foreach (var item in inventory.Where(x => !IsEquipped(x)))
+            {
+                <ItemCard Item="@item" OnEquipClicked="() => Equip(item)" IsEquipped="IsEquipped(item)" OnUnequipClicked="() => Unequip(item)"></ItemCard>
+            }
+        </div>
+    </div>
+    <div class="col-5 border border-secondary">
+        <div class="row row-cols-2 g-4">
+            @foreach (var item in equipment)
+            {
+                <ItemCard Item="@item" OnEquipClicked="() => Equip(item)" IsEquipped="IsEquipped(item)" OnUnequipClicked="() => Unequip(item)"></ItemCard>
+            }
+        </div>
+    </div>
+    <div class="col-2">
+        <table class="table">
+        @foreach (var itemStat in Enum.GetValues<ItemStat>())
+        {
+            var stat = equipment.Sum(x => x.Statistics[itemStat]);
+            var color = "";
+                @if (stat <= 0)
+                    color = "text-danger";
+
+            <tr><td>@itemStat</td><td class="@color">@stat</td></tr>
+        }
+        </table>
+    </div>
+</div>
+
+@code {
+    private List<Item> inventory = [];
+    private List<Item> equipment = [];
+
+    public async Task GenerateNewItem()
+    {
+        var hc = new HttpClient();
+        var item = await hc.GetFromJsonAsync<Item>("http://localhost:5284/item");
+
+        if (item is not null)
+            inventory.Add(item);
+    }
+
+    public void Equip(Item item)
+    {
+        if (equipment.Count < 6)
+            equipment.Add(item);
+    }
+
+    public void Unequip(Item item)
+    {
+        equipment.Remove(item);
+    }
+
+    public bool IsEquipped(Item item)
+    {
+        return equipment.Contains(item);
+    }
+}
