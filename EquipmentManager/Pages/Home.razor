@@ -10,7 +10,8 @@
         <div class="row row-cols-2 g-4">
             @foreach (var item in inventory.Where(x => !IsEquipped(x)))
             {
-                <ItemCard Item="@item" OnEquipClicked="() => Equip(item)" IsEquipped="IsEquipped(item)" OnUnequipClicked="() => Unequip(item)"></ItemCard>
+                <ItemCard Item="@item" OnEquipClicked="() => Equip(item)" IsEquipped="IsEquipped(item)"
+                    OnUnequipClicked="() => Unequip(item)"></ItemCard>
             }
         </div>
     </div>
@@ -18,51 +19,86 @@
         <div class="row row-cols-2 g-4">
             @foreach (var item in equipment)
             {
-                <ItemCard Item="@item" OnEquipClicked="() => Equip(item)" IsEquipped="IsEquipped(item)" OnUnequipClicked="() => Unequip(item)"></ItemCard>
+                <ItemCard Item="@item" OnEquipClicked="() => Equip(item)" IsEquipped="IsEquipped(item)"
+                    OnUnequipClicked="() => Unequip(item)"></ItemCard>
             }
         </div>
     </div>
     <div class="col-2">
         <table class="table">
-        @foreach (var itemStat in Enum.GetValues<ItemStat>())
-        {
-            var stat = equipment.Sum(x => x.Statistics[itemStat]);
-            var color = "";
+            @foreach (var itemStat in Enum.GetValues<ItemStat>())
+            {
+
+                var stat = equipment.Sum(x => x.Statistics[itemStat]);
+
+                var color = "";
                 @if (stat <= 0)
+
                     color = "text-danger";
 
-            <tr><td>@itemStat</td><td class="@color">@stat</td></tr>
-        }
+                <tr>
+                    <td>@itemStat</td>
+                    <td class="@color">@stat</td>
+                </tr>
+            }
         </table>
     </div>
 </div>
 
 @code {
     private List<Item> inventory = [];
+
     private List<Item> equipment = [];
 
+
+
     public async Task GenerateNewItem()
+
     {
+
         var hc = new HttpClient();
-        var item = await hc.GetFromJsonAsync<Item>("http://localhost:5284/item");
+
+        // localhost:5284
+
+        var item = await hc.GetFromJsonAsync<Item>("http://eiga.pollub.net/item");
+
+
 
         if (item is not null)
+
             inventory.Add(item);
+
     }
+
+
 
     public void Equip(Item item)
+
     {
+
         if (equipment.Count < 6)
+
             equipment.Add(item);
+
     }
+
+
 
     public void Unequip(Item item)
+
     {
+
         equipment.Remove(item);
+
     }
 
+
+
     public bool IsEquipped(Item item)
+
     {
+
         return equipment.Contains(item);
+
     }
 }
