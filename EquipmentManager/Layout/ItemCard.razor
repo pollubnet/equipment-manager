@@ -8,6 +8,15 @@
         <div class="card-body">
             <p class="card-text">@Item.History</p>
             <ItemStats Item="@Item"></ItemStats>
+
+            @if (IsEquipped)
+            {
+                <button class="btn btn-danger" @onclick="OnUnequipClicked">Unequip this</button>
+            }
+            else
+            {
+                <button class="btn btn-primary" @onclick="OnEquipClicked">Equip this</button>
+            }
         </div>
     </div>
 </div>
