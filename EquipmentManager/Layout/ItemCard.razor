@@ -8,12 +8,7 @@
         <div class="card-body">
             <p class="card-text">@Item.History</p>
 
-            <table class="table table-striped">
-                @foreach (var itemStat in Enum.GetValues<ItemStat>())
-                {
-                    <tr><td>@itemStat</td><td>@Item.Statistics[itemStat]</td></tr>
-                }
-            </table>
+            
             @if (IsEquipped)
             {
                 <button class="btn btn-danger" @onclick="OnUnequipClicked">Unequip this</button>
