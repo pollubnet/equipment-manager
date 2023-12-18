@@ -40,6 +40,7 @@
 @code {
     private List<Item> inventory = [];
     private List<Item> equipment = [];
+    private const int slots = 6;
 
     public async Task GenerateNewItem()
     {
@@ -53,7 +54,7 @@
 
     public void Equip(Item item)
     {
-        if (equipment.Count < 6)
+        if (equipment.Count < slots)
             equipment.Add(item);
     }
 
