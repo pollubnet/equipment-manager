@@ -44,7 +44,8 @@
     public async Task GenerateNewItem()
     {
         var hc = new HttpClient();
-        var item = await hc.GetFromJsonAsync<Item>("http://localhost:5284/item");
+		// localhost:5284
+        var item = await hc.GetFromJsonAsync<Item>("http://eiga.pollub.net/item");
 
         if (item is not null)
             inventory.Add(item);
