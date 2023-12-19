@@ -1,4 +1,4 @@
-﻿@using ItemGeneratorModels
+@using ItemGeneratorModels
 
 <div class="col">
     <div class="card" style="width: 15rem;">
@@ -6,7 +6,12 @@
             @Item.Name
         </div>
         <div class="card-body">
-            <p class="card-text">@Item.History</p>
+            <Button Type="ButtonType.Button" Color="ButtonColor.Primary" @onmouseover="ShowItemHistoryAsync" @onmouseleave="HideItemHistoryAsync">Item History </Button>
+            <Collapse @ref="collapse1">
+                <Card>
+                    <p class="card-text">@Item.History</p>
+                </Card>
+            </Collapse>
             <ItemStats Item="@Item"></ItemStats>
 
             @if (IsEquipped)
@@ -20,10 +25,23 @@
         </div>
     </div>
 </div>
-
+<div class="collapse">
+    @foreach (var item in messages)
+    {
+        <p>@item</p>
+    }
+</div>
 @code {
+    Collapse collapse1 = default!;
+
+    List<string> messages = new List<string>();
+    private async Task ShowItemHistoryAsync() => await collapse1.ShowAsync();
+    private async Task HideItemHistoryAsync() => await collapse1.HideAsync();
     [Parameter] public Item Item { get; set; } = null!;
     [Parameter] public bool IsEquipped { get; set; }
+    [Parameter] public bool ItemHistory { get; set; }
     [Parameter] public EventCallback OnEquipClicked { get; set; }
     [Parameter] public EventCallback OnUnequipClicked { get; set; }
+   
+
 }
