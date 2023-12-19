@@ -1,6 +1,5 @@
 ﻿@page "/"
 @using ItemGeneratorModels
-@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
 @inject IConfiguration Configuration
 
 <PageTitle>Home</PageTitle>
@@ -51,12 +50,11 @@
         var hc = new HttpClient();
         // localhost:5284
 
-        var builder = WebAssemblyHostBuilder.CreateDefault();
-        var hostname = builder.Configuration["HostName"];
+        var ItemGeneratorUrl = Configuration["ItemGeneratorUrl"];
 
-        if (string.IsNullOrEmpty(hostname)) hostname = "http://eiga.pollub.net/";
+        if (string.IsNullOrEmpty(ItemGeneratorUrl)) ItemGeneratorUrl = "http://eiga.pollub.net/item";
 
-        var item = await hc.GetFromJsonAsync<Item>(hostname + "item");
+        var item = await hc.GetFromJsonAsync<Item>(ItemGeneratorUrl);
 
         if (item is not null)
             inventory.Add(item);
