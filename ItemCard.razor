@@ -2,7 +2,7 @@
 
 <div class="col">
     <div class="card" style="width: 15rem;">
-        <div class="card-header" style="background-color: red">
+        <div class="card-header" style="background-color: @bgColorRarity(Item)">
             @Item.Name
         </div>
         <div class="card-body">
@@ -43,5 +43,25 @@
     [Parameter] public EventCallback OnEquipClicked { get; set; }
     [Parameter] public EventCallback OnUnequipClicked { get; set; }
    
+    public string bgColorRarity(Item item)
+    {
+        switch (Item.Rarity)
+        {
+            case ItemRarity.Common:
+                return "white";
+            case ItemRarity.Uncommon:
+                return "green";
+            case ItemRarity.Rare:
+                return "blue";
+            case ItemRarity.Insane:
+                return "pink";
+            case ItemRarity.Epic:
+                return "red";
+            case ItemRarity.Legendary:
+                return "violet";
+            default:
+                return "purple";
+        }
+    }
 
 }
